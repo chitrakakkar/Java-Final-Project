@@ -17,16 +17,11 @@ public class Main
     public final static String Price_Column = "Drink_Price";
 
     private static CoffeeDataModel coffeeDataModel;
-
-
-
     static Statement statement = null;
     static Connection conn = null;
     static ResultSet rs = null;
 
     static PreparedStatement preparedStatement = null;
-
-
     public static void main(String[] args)
     {
         if(!CreateTable())
@@ -38,16 +33,11 @@ public class Main
         {
             System.exit(0);
         }
-
-
         CoffeeGuiForm CoffeeGui = new CoffeeGuiForm();
-
     }
-
 
     public static boolean CreateTable()
     {
-
         try
         {
             try
@@ -61,13 +51,12 @@ public class Main
                 return false;
             }
 
-
             conn = DriverManager.getConnection(DB_CONNECTION_URL+ DB_NAME,USER,PASS);
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             if(!CoffeeTableExists())
             {
                 String CreateCoffeeTableSQL = "CREATE TABLE " + Coffee_Table_Name + "(" + PK_Column + " int NOT NULL AUTO_INCREMENT, " + DrinkName_Column + " varchar(100), " + Price_Column + " Double, PRIMARY KEY(" + PK_Column + "))";
-               statement.execute(CreateCoffeeTableSQL);
+                statement.execute(CreateCoffeeTableSQL);
                 System.out.println("Create Coffee Data table");
 
                 String addDataSQL = "INSERT INTO " + Coffee_Table_Name + "(" + DrinkName_Column + " , " + Price_Column + " )" + " VALUES (?,?)";
@@ -77,7 +66,6 @@ public class Main
                 preparedStatement.execute();
             }
             return true;
-
         }
         catch (SQLException se)
         {
@@ -112,10 +100,9 @@ public class Main
 
         }
     }
-
     private static boolean CoffeeTableExists() throws SQLException
     {
-        String checkTablePresentQuery = "SHOW TABLES LIKE '" + Coffee_Table_Name + "'";
+        String checkTablePresentQuery = " SHOW TABLES LIKE '" + Coffee_Table_Name + "'";
         ResultSet tablesRS = statement.executeQuery(checkTablePresentQuery);
         if (tablesRS.next())
         {    //If ResultSet has a next row, it has at least one row... that must be our table
@@ -123,15 +110,17 @@ public class Main
         }
         return false;
     }
-
     public static void shutdown()
     {
-        try {
-            if (rs != null) {
+        try
+        {
+            if (rs != null)
+            {
                 rs.close();
                 System.out.println("Result set closed");
             }
-        } catch (SQLException se) {
+        } catch (SQLException se)
+        {
             se.printStackTrace();
         }
 
@@ -141,12 +130,13 @@ public class Main
                 statement.close();
                 System.out.println("Statement closed");
             }
-        } catch (SQLException se){
+        } catch (SQLException se)
+        {
             //Closing the connection could throw an exception too
             se.printStackTrace();
         }
-
-        try {
+        try
+        {
             if (conn != null)
             {
                 conn.close();
