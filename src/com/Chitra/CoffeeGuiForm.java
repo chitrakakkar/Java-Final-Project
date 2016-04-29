@@ -1,17 +1,22 @@
 package com.Chitra;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /**
  * Created by chitrakakkar on 4/23/16.
  */
-public class CoffeeGuiForm
+public class CoffeeGuiForm extends JFrame implements WindowListener
 {
     private JScrollPane scrollPane1;
     private JCheckBox smallCheckBox;
     private JCheckBox mediumCheckBox;
     private JCheckBox largeCheckBox;
     private JTextField SmallQuantityTextBox;
+
+
+
     private JTextField MediumSizeTextBox;
     private JTextField LargeSizeTextBox;
     private JCheckBox cookiesCheckBox;
@@ -25,8 +30,8 @@ public class CoffeeGuiForm
     private JList list1;
     private JButton writeINToReportTableButton;
     private JPasswordField AdminPassword;
-    private JTextField textField4;
-    private JTextField textField5;
+    private JTextField ADDDRINKTEXT;
+    private JTextField ADDPRICETEXT;
     private JButton addButton;
     private JButton updateButton;
     private JButton deleteButton;
@@ -35,8 +40,57 @@ public class CoffeeGuiForm
     private JButton extractDataButton;
     private JTextArea textArea1;
     private JButton writeToaFileButton;
-    private JTable table1;
-    private JLabel TagLabel;
+    private JTable DrinkTable;
+    private JLabel tagLabel;
+    private JPanel rootPanel;
+    private JButton activateButton;
+
+    CoffeeGuiForm ()
+    {
+        super();
+        setContentPane(rootPanel);
+        pack();
+
+    }
+
+
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
+
+
 
 
 }
