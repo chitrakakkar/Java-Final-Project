@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.Chitra.CoffeeGuiForm">
-  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="11" column-count="15" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridLayoutManager" row-count="11" column-count="18" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="1593" height="400"/>
+      <xy x="20" y="20" width="1665" height="423"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
       <scrollpane id="e89c0" binding="scrollPane1">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="14" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="17" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -21,83 +21,6 @@
           </component>
         </children>
       </scrollpane>
-      <component id="f8f15" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Quantity"/>
-        </properties>
-      </component>
-      <component id="8b74f" class="javax.swing.JTextField" binding="SmallQuantityTextBox">
-        <constraints>
-          <grid row="3" column="1" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="36492" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="AddOns"/>
-        </properties>
-      </component>
-      <component id="db53a" class="javax.swing.JCheckBox" binding="cookiesCheckBox" default-binding="true">
-        <constraints>
-          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Cookies"/>
-        </properties>
-      </component>
-      <component id="9a958" class="javax.swing.JCheckBox" binding="cupCakesCheckBox" default-binding="true">
-        <constraints>
-          <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="CupCakes"/>
-        </properties>
-      </component>
-      <component id="4ece2" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Summary"/>
-        </properties>
-      </component>
-      <scrollpane id="a38ad">
-        <constraints>
-          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties/>
-        <border type="none"/>
-        <children>
-          <component id="d49d5" class="javax.swing.JList" binding="list1" default-binding="true">
-            <constraints/>
-            <properties/>
-          </component>
-        </children>
-      </scrollpane>
-      <component id="fd7a8" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Sum"/>
-        </properties>
-      </component>
-      <component id="9648e" class="javax.swing.JTextField" binding="SumTextField">
-        <constraints>
-          <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
       <component id="9b05d" class="javax.swing.JLabel" binding="addADrinkLabel">
         <constraints>
           <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -132,13 +55,13 @@
       </component>
       <component id="c319f" class="javax.swing.JSeparator">
         <constraints>
-          <grid row="6" column="0" row-span="1" col-span="15" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="6" column="0" row-span="1" col-span="18" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
       </component>
       <component id="4c94b" class="javax.swing.JLabel" binding="AdminLabel">
         <constraints>
-          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="3" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Admin Section"/>
@@ -146,23 +69,15 @@
       </component>
       <component id="2d2ef" class="javax.swing.JButton" binding="addButton" default-binding="true">
         <constraints>
-          <grid row="8" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="8" column="3" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Add"/>
         </properties>
       </component>
-      <component id="b3635" class="javax.swing.JButton" binding="updateButton" default-binding="true">
-        <constraints>
-          <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Update"/>
-        </properties>
-      </component>
       <component id="8bb0c" class="javax.swing.JLabel" binding="tagLabel">
         <constraints>
-          <grid row="1" column="4" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="16" use-parent-layout="false"/>
+          <grid row="1" column="6" row-span="1" col-span="6" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="16" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Coffee that's always the way you like."/>
@@ -170,7 +85,7 @@
       </component>
       <component id="e6770" class="javax.swing.JLabel">
         <constraints>
-          <grid row="0" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="21" use-parent-layout="false"/>
+          <grid row="0" column="6" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="21" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="The Coffee shop"/>
@@ -178,23 +93,15 @@
       </component>
       <component id="c125f" class="javax.swing.JPasswordField" binding="AdminPassword">
         <constraints>
-          <grid row="7" column="4" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="7" column="6" row-span="1" col-span="3" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
         <properties/>
       </component>
-      <component id="a919b" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
-        <constraints>
-          <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Delete"/>
-        </properties>
-      </component>
       <component id="210b6" class="javax.swing.JLabel" binding="searchStringLabel">
         <constraints>
-          <grid row="7" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="13" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Search String"/>
@@ -202,7 +109,7 @@
       </component>
       <component id="d155d" class="javax.swing.JTextField" binding="SearchText">
         <constraints>
-          <grid row="7" column="11" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="7" column="14" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
@@ -210,7 +117,7 @@
       </component>
       <component id="4475b" class="javax.swing.JTextArea" binding="reportTextField">
         <constraints>
-          <grid row="9" column="10" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="9" column="13" row-span="1" col-span="2" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
@@ -218,7 +125,7 @@
       </component>
       <component id="afe64" class="javax.swing.JButton" binding="extractDataButton" default-binding="true">
         <constraints>
-          <grid row="7" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="15" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Extract Data"/>
@@ -226,87 +133,23 @@
       </component>
       <component id="a6231" class="javax.swing.JButton" binding="writeToaFileButton" default-binding="true">
         <constraints>
-          <grid row="9" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="15" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="WriteToaFile"/>
         </properties>
       </component>
-      <component id="71c0b" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="5" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="VAT"/>
-        </properties>
-      </component>
-      <component id="f2dbe" class="javax.swing.JTextField" binding="VATTextField">
-        <constraints>
-          <grid row="5" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="53a49" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="5" column="6" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="TotalSum"/>
-        </properties>
-      </component>
-      <component id="22314" class="javax.swing.JTextField" binding="TotalSumText">
-        <constraints>
-          <grid row="5" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
-      <component id="b068c" class="javax.swing.JButton" binding="writeINToReportTableButton" default-binding="true">
-        <constraints>
-          <grid row="5" column="11" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="WriteINToReportTable"/>
-        </properties>
-      </component>
       <component id="fe918" class="javax.swing.JTextField" binding="DateText">
         <constraints>
-          <grid row="1" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+          <grid row="1" column="15" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
         <properties/>
-      </component>
-      <component id="6fd49" class="javax.swing.JCheckBox" binding="iceCreamCheckBox" default-binding="true">
-        <constraints>
-          <grid row="4" column="5" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="IceCream"/>
-        </properties>
-      </component>
-      <component id="c4a71" class="javax.swing.JCheckBox" binding="candyCheckBox" default-binding="true">
-        <constraints>
-          <grid row="4" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Candy"/>
-        </properties>
-      </component>
-      <component id="a600c" class="javax.swing.JCheckBox" binding="chipsCheckBox" default-binding="true">
-        <constraints>
-          <grid row="4" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Chips"/>
-        </properties>
       </component>
       <component id="47869" class="javax.swing.JButton" binding="activateButton" default-binding="true">
         <constraints>
-          <grid row="7" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="7" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="Activate"/>
@@ -314,10 +157,106 @@
       </component>
       <component id="4924b" class="javax.swing.JButton" binding="quitAdminSectionButton" default-binding="true">
         <constraints>
-          <grid row="10" column="12" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <grid row="10" column="15" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <text value="QuitAdminSection"/>
+        </properties>
+      </component>
+      <component id="198a4" class="javax.swing.JLabel" binding="TotalPriceLabel">
+        <constraints>
+          <grid row="3" column="13" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="FinalPrice"/>
+        </properties>
+      </component>
+      <component id="db170" class="javax.swing.JTextField" binding="TotalPriceText">
+        <constraints>
+          <grid row="3" column="14" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="8393f" class="javax.swing.JButton" binding="calCulateFinalPriceButton">
+        <constraints>
+          <grid row="3" column="15" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="CalCulateFinalPrice"/>
+        </properties>
+      </component>
+      <component id="2946a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="13" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Vat"/>
+        </properties>
+      </component>
+      <component id="196bb" class="javax.swing.JTextField" binding="VatText">
+        <constraints>
+          <grid row="4" column="14" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="315d2" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="13" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="FinalSum"/>
+        </properties>
+      </component>
+      <component id="55040" class="javax.swing.JTextField" binding="FinalSumText">
+        <constraints>
+          <grid row="5" column="14" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="51edb" class="javax.swing.JButton" binding="calculateTotalSumButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="15" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="CalculateTotalSum"/>
+        </properties>
+      </component>
+      <component id="4b3e2" class="javax.swing.JButton" binding="quitButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Quit"/>
+        </properties>
+      </component>
+      <component id="b068c" class="javax.swing.JButton" binding="writeINToReportTableButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="WriteINToReportTable"/>
+        </properties>
+      </component>
+      <component id="5e943" class="javax.swing.JButton" binding="resetButton" default-binding="true">
+        <constraints>
+          <grid row="5" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="ResetTheTable"/>
+        </properties>
+      </component>
+      <component id="a919b" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
+        <constraints>
+          <grid row="9" column="3" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Delete"/>
         </properties>
       </component>
     </children>

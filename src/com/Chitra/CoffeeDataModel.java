@@ -14,6 +14,16 @@ public class CoffeeDataModel extends AbstractTableModel
     ResultSet resultSet;
     int numberOfRows;
     int numberOfColumns;
+    public static Double FinalSum =0.0;
+    Double totalPrice =0.0;
+
+    public Double getTotalPrice()
+    {
+        return totalPrice;
+    }
+    public void setTotalPrice(Double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     // constructor gets the result set
     // and rowCount and columnCount
@@ -25,7 +35,8 @@ public class CoffeeDataModel extends AbstractTableModel
     }
     //updates the result set
 
-    public  void updateResultSet(ResultSet newRS) {
+    public  void updateResultSet(ResultSet newRS)
+    {
         resultSet = newRS;
         setup();
 
@@ -52,7 +63,8 @@ public class CoffeeDataModel extends AbstractTableModel
             //Move cursor to the start...
             resultSet.beforeFirst();
             // next() method moves the cursor forward one row and returns true if there is another row ahead
-            while (resultSet.next()) {
+            while (resultSet.next())
+            {
                 numberOfRows++;
 
             }
@@ -61,6 +73,16 @@ public class CoffeeDataModel extends AbstractTableModel
         } catch (SQLException se) {
             System.out.println("Error counting rows " + se);
         }
+    }
+    public  Double getFinalSum()
+    {
+        return FinalSum;
+    }
+
+    public  void setFinalSum(Double finalSum)
+    {
+        FinalSum = totalPrice + FinalSum ;
+        System.out.println("Final Sum = " + FinalSum);
     }
 
     @Override
@@ -75,17 +97,43 @@ public class CoffeeDataModel extends AbstractTableModel
     }
 
     @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        try {
+    public Object getValueAt(int rowIndex, int columnIndex)
+    {
+
+        try
+        {
             resultSet.absolute(rowIndex + 1);
-            Object o = resultSet.getObject(columnIndex + 1);
-            return o.toString();
-        } catch (SQLException se) {
-            System.out.println(se);
-            //se.printStackTrace();
-            return se.toString();
+            if(columnIndex ==4)
+            {
+                Double price = Double.parseDouble( getValueAt(rowIndex,2).toString());
+                Integer quantity = Integer.parseInt(getValueAt(rowIndex,3).toString());
+                Double TotalPrice = price * quantity;
+                totalPrice = new Double(TotalPrice);
+                return totalPrice.toString();
+            }
+            else
+            {
+                Object o = resultSet.getObject(columnIndex + 1);
+                return o.toString();
+            }
         }
-    }
+        catch (SQLException se)
+        {
+            System.out.println(se);
+            return se.toString();
+
+        }
+//      try {
+//            //move cursor by one row
+//          resultSet.absolute(rowIndex + 1);
+//           Object o = resultSet.getObject(columnIndex + 1);
+//           return o.toString();
+//       } catch (SQLException se) {
+//            System.out.println(se);
+//           //se.printStackTrace();
+//           return se.toString();
+//      }
+   }
     // deletes the row selected in GUI using predefined method called deleteRow
     // On the resultSet
     public  boolean deleteRow(int row)
@@ -102,17 +150,20 @@ public class CoffeeDataModel extends AbstractTableModel
             return false;
         }
     }
-
     // Updates the new value into a row using result set whenever
     // user edits an editable cell which is Time _Taken in this case
     public void setValueAt(Object newValue, int row, int col) {
         //Make sure newValue is a positive number
-        Double newPRice;
+        Double newQuantity;
 
         try {
-            newPRice = Double.parseDouble(newValue.toString());
+            newQuantity = Double.parseDouble(newValue.toString());
+            //newPrice = newQuantity * Double.parseDouble(this.getValueAt());
+            //System.out.println(Double.parseDouble( Main.Price_Column));
 
-            if (newPRice < 0.0)
+            //System.out.println("I am the new price " + newPrice);
+
+            if (newQuantity < 0.0)
             {
                 throw new NumberFormatException("Time Taken  must be a postive double number");
             }
@@ -124,14 +175,14 @@ public class CoffeeDataModel extends AbstractTableModel
             //return prevents the following database update code happening...
             return;
         }
-
         try
         {
             resultSet.absolute(row + 1);
-            resultSet.updateDouble(Main.Price_Column, newPRice);
-            System.out.println("Updated the time");
+            resultSet.updateDouble(Main.Quantity_Column, newQuantity);
+            //System.out.println("Updated the Quantity");
             resultSet.updateRow();
             fireTableDataChanged();
+            //TotalPriceText.setText(getSum().toString());
         }
         catch (SQLException se)
         {
@@ -143,7 +194,7 @@ public class CoffeeDataModel extends AbstractTableModel
     public boolean isCellEditable(int row, int col)
     {
         // if(col == resultSet.findColumn(Main.Time_Taken)
-        if (col == 2)
+        if (col == 3 || col == 2|| col==4 )
         {
             return true;
         }
@@ -169,16 +220,42 @@ public class CoffeeDataModel extends AbstractTableModel
         }
     }
     @Override
-    public String getColumnName(int col){
+    public String getColumnName(int col)
+    {
         //Get from ResultSet metadata, which contains the database column names
         //TODO translate DB column names into something nicer for display, so "YEAR_RELEASED" becomes "Year Released"
-        try {
+        try
+        {
             return resultSet.getMetaData().getColumnName(col + 1);
-        } catch (SQLException se) {
+        } catch (SQLException se)
+        {
             System.out.println("Error fetching column names" + se);
             return "?";
         }
     }
 
+    public void getEditedData()
+    {
 
-}
+    }
+
+
+
+
+    // up vote
+    //down vote
+    //table.getSelectedRow() will get selected row.
+
+        //table.getSelectedColumns() will get selected columns.
+
+    //getValueAt(rowIndex, columnIndex) will give the value present at the selected row for each column.
+
+    //if (jTable1.getCellEditor() == null) {
+    //System.out.println("Not Edited");
+
+} //else {
+
+        //System.out.println(jTable1.getValueAt(jTable1.getSelectedRow(),jTable1.getSelectedColumn()));
+       // }
+
+//}
