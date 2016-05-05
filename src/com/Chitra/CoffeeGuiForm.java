@@ -66,6 +66,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
     private DefaultListModel<Object> listModel;
     CoffeeDataModel coffeeDataModel;
+    Connection conn = null;
 
     LinkedList<Object> SalesReportData = new LinkedList<Object>();
 
@@ -128,10 +129,12 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
 
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
 
 
-                try {
+                try
+                {
                     String Driver = "com.mysql.jdbc.Driver";
                     //Class.forName(Driver);
                     Connection conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
@@ -185,7 +188,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                     return;
 
                 }
-                if (Price < 0) {
+                if (Price < 0)
+                {
                     throw new NumberFormatException("Price needs to be a positive number");
 
                 }
@@ -224,26 +228,26 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             try {
                 String searchText = SearchText.getText();
                 System.out.println("I am search " + searchText);
-                Connection conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
+                 conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
                 statement = conn.createStatement();
                 //String addSql = "SELECT * FROM " + Report_Table_Name + " WHERE " + Date_Of_Sale_Column + " = " + searchText;
                 //String addSql = "select * from Sale_Report where Date_OF_Sale = '2016/05/03'";
                 String addSql = "select * from Sale_Report where Date_OF_Sale" + " = " + "'" + searchText + "'";
                 res = statement.executeQuery(addSql);
 
-                CoffeeDataModel newTable = new CoffeeDataModel(res);
+                //CoffeeDataModel newTable = new CoffeeDataModel(res);
 
-                while (res.next()) {
-                    SalesReportData.add(res.getString(1).trim());
-                    SalesReportData.add(res.getString(2).trim());
-                    SalesReportData.add(res.getString(3).trim());
-                    SalesReportData.add(res.getString(4).trim());
-
+                while (res.next())
+                {
+                    SalesReportData.add(res.getString(1)+ "." + res.getString(2)+" | "+ res.getString(3)+ " | "+ res.getString(4));
+//                    SalesReportData.add(res.getString(2));
+//                    SalesReportData.add(res.getString(3));
+//                    SalesReportData.add(res.getString(4));
                 }
-                for (Object st : SalesReportData) {
+                for (Object st : SalesReportData)
+                {
                     listModel.addElement(st);
                 }
-
                 SaleReportList.setModel(listModel);
             } catch (SQLException se) {
                 System.out.println("I am the error " + se);
@@ -252,41 +256,53 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             }
         });
 
-    }
+        quitButton.addActionListener(e ->
+        {
+            System.exit(0);
 
-    private static boolean ReportTableExists() throws SQLException {
+        });
+    }
+    private static boolean ReportTableExists() throws SQLException
+    {
         String checkTablePresentQuery = " SHOW TABLES LIKE '" + Report_Table_Name + "'";
         ResultSet tablesRS = statement.executeQuery(checkTablePresentQuery);
-        if (tablesRS.next()) {    //If ResultSet has a next row, it has at least one row... that must be our table
+        if (tablesRS.next())
+        {    //If ResultSet has a next row, it has at least one row... that must be our table
             return true;
         }
         return false;
     }
 
     @Override
-    public void windowOpened(WindowEvent e) {
+    public void windowOpened(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowClosing(WindowEvent e) {
+    public void windowClosing(WindowEvent e)
+    {
         Main.shutdown();
         System.out.println("Closing");
 
     }
 
     @Override
-    public void windowClosed(WindowEvent e) {
+    public void windowClosed(WindowEvent e)
+    {
 
     }
 
     @Override
-    public void windowIconified(WindowEvent e) {
+    public void windowIconified(WindowEvent e)
+    {
+
 
     }
 
     @Override
-    public void windowDeiconified(WindowEvent e) {
+    public void windowDeiconified(WindowEvent e)
+    {
 
     }
 
@@ -316,7 +332,6 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         writeToaFileButton.setEnabled(false);
         quitAdminSectionButton.setEnabled(false);
         coffeeDataModel.adminMode = false;
-
 
     }
 
@@ -368,6 +383,10 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         }
 
     }
+
+
+
+
 
 
 }

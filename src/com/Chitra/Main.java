@@ -187,7 +187,8 @@ public class Main
             se.printStackTrace();
         }
 
-        try {
+        try
+        {
             if (statement != null)
             {
                 statement.close();
