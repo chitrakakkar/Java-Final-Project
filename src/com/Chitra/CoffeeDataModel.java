@@ -99,7 +99,6 @@ public class CoffeeDataModel extends AbstractTableModel
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
-
         try
         {
             resultSet.absolute(rowIndex + 1);
@@ -113,8 +112,14 @@ public class CoffeeDataModel extends AbstractTableModel
             }
             else
             {
+                try{
                 Object o = resultSet.getObject(columnIndex + 1);
                 return o.toString();
+                }
+                catch (NullPointerException np)
+                {
+                    return "";
+                }
             }
         }
         catch (SQLException se)
@@ -158,11 +163,6 @@ public class CoffeeDataModel extends AbstractTableModel
 
         try {
             newQuantity = Double.parseDouble(newValue.toString());
-            //newPrice = newQuantity * Double.parseDouble(this.getValueAt());
-            //System.out.println(Double.parseDouble( Main.Price_Column));
-
-            //System.out.println("I am the new price " + newPrice);
-
             if (newQuantity < 0.0)
             {
                 throw new NumberFormatException("Time Taken  must be a postive double number");
@@ -194,19 +194,25 @@ public class CoffeeDataModel extends AbstractTableModel
     public boolean isCellEditable(int row, int col)
     {
         // if(col == resultSet.findColumn(Main.Time_Taken)
-        if (col == 3 || col == 2|| col==4 )
+        if (col == 3)
         {
             return true;
+        }
+        else if(col ==2)
+        {
+
         }
         return false;
     }
     // Inserts the value into a row using result set
-    public  boolean insertRow(String dn, Double pc)
+    public  boolean insertRow(String dn, Double pc, int Q,Double TP)
     {
         try {
             resultSet.moveToInsertRow();
             resultSet.updateString(Main.DrinkName_Column, dn);
             resultSet.updateDouble(Main.Price_Column,pc);
+            resultSet.updateInt(Main.Quantity_Column,Q);
+            resultSet.updateDouble(Main.Total_Price,TP);
             resultSet.insertRow();
             fireTableDataChanged();
             return true;
@@ -233,14 +239,6 @@ public class CoffeeDataModel extends AbstractTableModel
             return "?";
         }
     }
-
-    public void getEditedData()
-    {
-
-    }
-
-
-
 
     // up vote
     //down vote

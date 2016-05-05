@@ -7,11 +7,14 @@ import javax.swing.table.TableCellEditor;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Arc2D;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.beans.*;
+import java.util.LinkedList;
+import java.util.Objects;
 
 
 /**
@@ -38,7 +41,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
     private JTextField ADDDRINKTEXT;
     private JTextField ADDPRICETEXT;
     private JButton addButton;
-    private JButton updateButton;
+    private JButton updateThePriceButton;
     private JButton deleteButton;
     private JTextField DateText;
     private JTextField SearchText;
@@ -62,15 +65,24 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
     private JTextField VatText;
     private JTextField FinalSumText;
     private JButton calculateTotalSumButton;
+    private JList<Object> SaleReportList;
+
+    private DefaultListModel<Object> listModel;
+    private JTable ReportDataTable;
+
+    LinkedList<Object> SalesReportData = new LinkedList<Object>();
+
+
 
     static PreparedStatement preparedStatement = null;
-
-
+    static ResultSet res = null;
+    public boolean Column2Editable = false;
     private Double VatValue =0.0;
+
 
     CoffeeGuiForm (final CoffeeDataModel coffeeDataModel)
     {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         setContentPane(rootPanel);
         pack();
@@ -89,6 +101,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
         {
 
             HighLightAdminSection();
+            AdminPassword.setText("");
+
         });
 
         quitAdminSectionButton.addActionListener(e -> {
@@ -138,7 +152,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
 
                     int rowCount = DrinkTable.getRowCount();
                     String dName = "";String timeOFSale ="";
-                    Double Sales =0.0;
+                    Double Sales;
                     for (int i = 0; i < rowCount; i++)
                     {
                          Sales = Double.parseDouble(DrinkTable.getValueAt(i, 4).toString());
@@ -169,6 +183,138 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
                 }
             }
         });
+
+        addButton.addActionListener(e ->
+        {
+            String drinkName = ADDDRINKTEXT.getText();
+            Double Price =0.0;
+            if(drinkName == null || drinkName.trim().equals(""))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Please enter a name for the drink");
+                return;
+
+            }
+            try
+            { Price = Double.parseDouble(ADDPRICETEXT.getText());
+
+            if(Price.toString() == null|| Price.toString().trim().equals(""))
+            {
+                JOptionPane.showMessageDialog(rootPane, "Please enter a price for the drink");
+                return;
+
+            }
+            if(Price<0)
+            {
+                throw new NumberFormatException("Price needs to be a positive number");
+
+            }}
+            catch (NumberFormatException ne)
+            {
+                JOptionPane.showMessageDialog(rootPane,
+                        "please enter a valid value");
+                return;
+
+            }
+
+            boolean insertRow = coffeeDataModel.insertRow(drinkName,Price,0,0.0);
+            ADDDRINKTEXT.setText("");
+            ADDPRICETEXT.setText("");
+            if(!insertRow)
+            {
+                JOptionPane.showMessageDialog(rootPane, "Error adding new drink");
+
+            }
+
+        });
+
+        deleteButton.addActionListener(e ->
+        {
+            int currentRow = DrinkTable.getSelectedRow();
+            if (currentRow == -1) {      // -1 means no row is selected. Display error message.
+                JOptionPane.showMessageDialog(rootPane, "Please choose a drink to delete");
+            }
+            boolean deleted = coffeeDataModel.deleteRow(currentRow);
+            if (deleted) {
+                Main.loadAllCoffeeData();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Error deleting row");
+            }
+
+        });
+        updateThePriceButton.addActionListener(e ->
+        {
+            this.Column2Editable = true;
+
+//            int rowCount = DrinkTable.getRowCount();
+//            for(int i =0; i< rowCount;i++)
+//            {
+//
+//            DrinkTable.getModel().isCellEditable(i,2);
+//            }
+
+        });
+
+        extractDataButton.addActionListener(e ->
+        {
+            listModel = new DefaultListModel<Object>();
+          try
+          {
+            String searchText = SearchText.getText();
+              System.out.println("I am search " + searchText);
+            //String addSql = "SELECT * FROM " + Report_Table_Name + " WHERE " + Date_Of_Sale_Column + " = " + searchText;
+            String addSql = "select * from Sale_Report where Date_OF_Sale = '2016/05/03'";
+              res = statement.executeQuery(addSql);
+//              CoffeeDataModel reportData = new CoffeeDataModel(res);
+//              ReportDataTable.setModel(reportData);
+//              ReportDataTable.setGridColor(Color.black);
+
+//              for (Object o:res.before
+//                   ) {
+//
+//              }
+
+              while(res.next())
+              {
+
+                  SalesReportData.add(res.getString(0));
+                  SalesReportData.add(res.getString(1));
+                  SalesReportData.add(res.getString(2));
+                  SalesReportData.add(res.getString(3));
+
+              }
+
+              for (Object st:SalesReportData
+                   ) {
+
+                  listModel.addElement(st);
+
+              }
+
+             SaleReportList.setModel(listModel);
+
+//              for(int i=0;i<SaleReportList.getSize();i++)
+//              {
+//
+//              }
+
+
+//                  rs.absolute(row+1);
+//                  Object o = rs.getObject(column+1);
+//                  System.out.println("I am here" + o.toString());
+
+//              rs.absolute(row+1);
+//              Object o = rs.getObject(column+1);
+//              reportTextField.setText(o.toString());
+
+
+          }
+          catch (SQLException se)
+          {
+              System.out.println("Error extracting data !!!");
+              return;
+          }
+        });
+
 
     }
 
@@ -236,8 +382,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
             SearchText.setEnabled(false);
             extractDataButton.setEnabled(false);
             writeToaFileButton.setEnabled(false);
-            reportTextField.setEnabled(false);
             quitAdminSectionButton.setEnabled(false);
+            updateThePriceButton.setEnabled(false);
 
     }
     public void HighLightAdminSection() {
@@ -245,6 +391,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
         System.out.println("I am the password " + password);
         if (password.equals( "JavaProject"))
         {
+
             AdminLabel.setEnabled(true);
             ADDDRINKTEXT.setEnabled(true);
             ADDPRICETEXT.setEnabled(true);
@@ -256,8 +403,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
             SearchText.setEnabled(true);
             extractDataButton.setEnabled(true);
             writeToaFileButton.setEnabled(true);
-            reportTextField.setEnabled(true);
             quitAdminSectionButton.setEnabled(true);
+            updateThePriceButton.setEnabled(true);
 
         } else {
             JOptionPane.showMessageDialog(rootPane, "Wrong Password, try again");
