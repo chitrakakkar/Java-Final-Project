@@ -17,6 +17,8 @@ public class CoffeeDataModel extends AbstractTableModel
     public static Double FinalSum =0.0;
     Double totalPrice =0.0;
 
+    boolean adminMode = false;
+
     public Double getTotalPrice()
     {
         return totalPrice;
@@ -193,15 +195,17 @@ public class CoffeeDataModel extends AbstractTableModel
     // allows to edit the cell(Time taken in this case)
     public boolean isCellEditable(int row, int col)
     {
-        // if(col == resultSet.findColumn(Main.Time_Taken)
-        if (col == 3)
-        {
+
+        if (col == 3) {
             return true;
         }
-        else if(col ==2)
-        {
 
+        // if(col == resultSet.findColumn(Main.Time_Taken)
+
+        if (adminMode && col == 2) {
+            return true;
         }
+
         return false;
     }
     // Inserts the value into a row using result set

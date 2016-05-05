@@ -79,9 +79,12 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
     public boolean Column2Editable = false;
     private Double VatValue =0.0;
 
+    CoffeeDataModel coffeeDataModel;
 
     CoffeeGuiForm (final CoffeeDataModel coffeeDataModel)
     {
+
+        this.coffeeDataModel = coffeeDataModel;
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         setContentPane(rootPanel);
@@ -97,6 +100,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
         DateText.setEditable(false);
         getContentPane().setBackground(Color.PINK);
         coffeeDataModel.findColumn("Drink_Quantity");
+
         activateButton.addActionListener(e ->
         {
 
@@ -371,6 +375,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
     {
 
             //AdminPassword.setEnabled(false);
+
+            //
             AdminLabel.setEnabled(false);
             ADDDRINKTEXT.setEnabled(false);
             ADDPRICETEXT.setEnabled(false);
@@ -384,6 +390,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
             writeToaFileButton.setEnabled(false);
             quitAdminSectionButton.setEnabled(false);
             updateThePriceButton.setEnabled(false);
+
+        coffeeDataModel.adminMode = false;
 
     }
     public void HighLightAdminSection() {
@@ -405,6 +413,10 @@ public class CoffeeGuiForm extends JFrame implements WindowListener
             writeToaFileButton.setEnabled(true);
             quitAdminSectionButton.setEnabled(true);
             updateThePriceButton.setEnabled(true);
+
+            coffeeDataModel.adminMode = true;
+
+
 
         } else {
             JOptionPane.showMessageDialog(rootPane, "Wrong Password, try again");
