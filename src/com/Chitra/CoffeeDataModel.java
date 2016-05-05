@@ -17,6 +17,9 @@ public class CoffeeDataModel extends AbstractTableModel
     public static Double FinalSum =0.0;
     Double totalPrice =0.0;
 
+
+    boolean adminMode = false;
+
     public Double getTotalPrice()
     {
         return totalPrice;
@@ -74,16 +77,7 @@ public class CoffeeDataModel extends AbstractTableModel
             System.out.println("Error counting rows " + se);
         }
     }
-    public  Double getFinalSum()
-    {
-        return FinalSum;
-    }
 
-    public  void setFinalSum(Double finalSum)
-    {
-        FinalSum = totalPrice + FinalSum ;
-        System.out.println("Final Sum = " + FinalSum);
-    }
 
     @Override
     public int getRowCount() {
@@ -198,9 +192,9 @@ public class CoffeeDataModel extends AbstractTableModel
         {
             return true;
         }
-        else if(col ==2)
+        if(adminMode && col==2)
         {
-
+            return true;
         }
         return false;
     }
@@ -222,7 +216,6 @@ public class CoffeeDataModel extends AbstractTableModel
             System.out.println("Error adding row");
             System.out.println(e);
             return false;
-
         }
     }
     @Override

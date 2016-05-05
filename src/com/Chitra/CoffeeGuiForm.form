@@ -245,33 +245,17 @@
         </constraints>
         <properties/>
       </component>
-      <component id="a919b" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
-        <constraints>
-          <grid row="10" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Delete a drink"/>
-        </properties>
-      </component>
-      <component id="451fd" class="javax.swing.JButton" binding="updateThePriceButton" default-binding="true">
-        <constraints>
-          <grid row="10" column="11" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="Update the price"/>
-        </properties>
-      </component>
       <component id="2d2ef" class="javax.swing.JButton" binding="addButton" default-binding="true">
         <constraints>
           <grid row="12" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="Add"/>
+          <text value="Add a drink"/>
         </properties>
       </component>
       <scrollpane id="48ea3">
         <constraints>
-          <grid row="13" column="19" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="9" column="18" row-span="4" col-span="3" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
@@ -282,6 +266,14 @@
           </component>
         </children>
       </scrollpane>
+      <component id="a919b" class="javax.swing.JButton" binding="deleteButton" default-binding="true">
+        <constraints>
+          <grid row="12" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <text value="Delete a drink"/>
+        </properties>
+      </component>
     </children>
   </grid>
 </form>
