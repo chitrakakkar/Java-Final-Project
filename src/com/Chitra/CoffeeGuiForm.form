@@ -260,7 +260,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="6cd2f" class="javax.swing.JList" binding="SaleReportList">
+          <component id="2ce7c" class="javax.swing.JTable" binding="ReportTable">
             <constraints/>
             <properties/>
           </component>

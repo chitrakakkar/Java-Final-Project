@@ -96,7 +96,7 @@ public class CoffeeDataModel extends AbstractTableModel
         try
         {
             resultSet.absolute(rowIndex + 1);
-            if(columnIndex ==4)
+            if(columnIndex == 4)
             {
                 Double price = Double.parseDouble( getValueAt(rowIndex,2).toString());
                 Integer quantity = Integer.parseInt(getValueAt(rowIndex,3).toString());
@@ -106,7 +106,8 @@ public class CoffeeDataModel extends AbstractTableModel
             }
             else
             {
-                try{
+                try
+                {
                 Object o = resultSet.getObject(columnIndex + 1);
                 return o.toString();
                 }
@@ -151,17 +152,18 @@ public class CoffeeDataModel extends AbstractTableModel
     }
     // Updates the new value into a row using result set whenever
     // user edits an editable cell which is Time _Taken in this case
-    public void setValueAt(Object newValue, int row, int col) {
+    public void setValueAt(Object newValue, int row, int col)
+    {
         //Make sure newValue is a positive number
         Double newQuantity;
-
         try {
             newQuantity = Double.parseDouble(newValue.toString());
             if (newQuantity < 0.0)
             {
                 throw new NumberFormatException("Time Taken  must be a postive double number");
             }
-        } catch (NumberFormatException ne) {
+        } catch (NumberFormatException ne)
+        {
             //Error dialog box. First argument is the parent GUI component, which is only used to center the
             // dialog box over that component. We don't have a reference to any GUI components here
             // but are allowed to use null - this means the dialog box will show in the center of your screen.

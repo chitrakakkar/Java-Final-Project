@@ -8,6 +8,7 @@ import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Arc2D;
+import java.io.BufferedWriter;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -62,7 +63,11 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     private JTextField VatText;
     private JTextField FinalSumText;
     private JButton calculateTotalSumButton;
+    private JTable ReportTable;
     private JList<Object> SaleReportList;
+
+
+    private static ReportTableModel reportTableModel;
 
     private DefaultListModel<Object> listModel;
     CoffeeDataModel coffeeDataModel;
@@ -102,6 +107,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
         quitAdminSectionButton.addActionListener(e -> {
             UnHighLightAdminSection();
+            listModel.removeAllElements();
         });
 
         calCulateFinalPriceButton.addActionListener(e ->
@@ -226,29 +232,51 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         {
             listModel = new DefaultListModel<Object>();
             try {
+
                 String searchText = SearchText.getText();
+                if(searchText ==null || searchText.trim().equals("")
+                        )
+                {
+                    JOptionPane.showMessageDialog(rootPane,"Search box is empty !!! please enter a string to search");
+                    SearchText.grabFocus();
+
+                }
                 System.out.println("I am search " + searchText);
                  conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
                 statement = conn.createStatement();
                 //String addSql = "SELECT * FROM " + Report_Table_Name + " WHERE " + Date_Of_Sale_Column + " = " + searchText;
                 //String addSql = "select * from Sale_Report where Date_OF_Sale = '2016/05/03'";
-                String addSql = "select * from Sale_Report where Date_OF_Sale" + " = " + "'" + searchText + "'";
+               String addSql = "select * from Sale_Report where Date_OF_Sale" + " = " + "'" + searchText + "'";
+                //String addSql = " select * from Sale_Report where '?' = searchText ";
                 res = statement.executeQuery(addSql);
+
+                if (reportTableModel == null)
+                {
+                    reportTableModel = new ReportTableModel(res);
+
+                }
+                else
+                {
+                    reportTableModel.updateResultSet(res);
+
+                }
+                ReportTable.setModel(reportTableModel);
+                ReportTable.setGridColor(Color.black);
 
                 //CoffeeDataModel newTable = new CoffeeDataModel(res);
 
-                while (res.next())
-                {
-                    SalesReportData.add(res.getString(1)+ "." + res.getString(2)+" | "+ res.getString(3)+ " | "+ res.getString(4));
-//                    SalesReportData.add(res.getString(2));
-//                    SalesReportData.add(res.getString(3));
-//                    SalesReportData.add(res.getString(4));
-                }
-                for (Object st : SalesReportData)
-                {
-                    listModel.addElement(st);
-                }
-                SaleReportList.setModel(listModel);
+//                while (res.next())
+//                {
+//                    SalesReportData.add(res.getString(1)+ "." + res.getString(2)+" | "+ res.getString(3)+ " | "+ res.getString(4));
+////                    SalesReportData.add(res.getString(2));
+////                    SalesReportData.add(res.getString(3));
+////                    SalesReportData.add(res.getString(4));
+//                }
+//                for (Object st : SalesReportData)
+//                {
+//                    listModel.addElement(st);
+//                }
+//                SaleReportList.setModel(listModel);
             } catch (SQLException se) {
                 System.out.println("I am the error " + se);
                 System.out.println("Error extracting data !!!");
@@ -259,6 +287,21 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         quitButton.addActionListener(e ->
         {
             System.exit(0);
+
+        });
+
+        writeToaFileButton.addActionListener(e ->
+        {
+            if(reportTableModel == null)
+            {
+                JOptionPane.showMessageDialog(rootPane," No data TO write !!! Please extract some data for your table");
+                SearchText.grabFocus();
+            }
+            else
+            {
+                WriteIntoAFile.WriteIntoAFile(ReportTable);
+                
+            }
 
         });
     }
@@ -332,6 +375,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         writeToaFileButton.setEnabled(false);
         quitAdminSectionButton.setEnabled(false);
         coffeeDataModel.adminMode = false;
+        SearchText.setText("");
+
 
     }
 
@@ -354,6 +399,8 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             writeToaFileButton.setEnabled(true);
             quitAdminSectionButton.setEnabled(true);
             coffeeDataModel.adminMode = true;
+
+
 
         } else {
             JOptionPane.showMessageDialog(rootPane, "Wrong Password, try again");
