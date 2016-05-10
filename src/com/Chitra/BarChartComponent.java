@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 /**
  * Created by chitrakakkar on 5/9/16.
+ * Reference : - https://gist.github.com/jimmykurian/1856973
  */
 public class BarChartComponent extends JComponent
 {
