@@ -12,10 +12,9 @@ import java.io.BufferedWriter;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 import java.beans.*;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.Date;
 
 
 /**
@@ -64,21 +63,24 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     private JTextField FinalSumText;
     private JButton calculateTotalSumButton;
     private JTable ReportTable;
+    private JScrollPane Summar;
+    private JList InvoiceList;
+    private JButton chartButton;
     private JList<Object> SaleReportList;
 
 
     private static ReportTableModel reportTableModel;
 
-    private DefaultListModel<Object> listModel;
+    private DefaultListModel<String> listModel;
     CoffeeDataModel coffeeDataModel;
     Connection conn = null;
 
-    LinkedList<Object> SalesReportData = new LinkedList<Object>();
+    LinkedList<String> SelectedDrinks = new LinkedList<String>();
 
 
     static PreparedStatement preparedStatement = null;
     static ResultSet res = null;
-    private Double VatValue = 0.0;
+    private long VatValue = 0;
 
 
     CoffeeGuiForm(final CoffeeDataModel coffeeDataModel) {
@@ -107,22 +109,46 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
         quitAdminSectionButton.addActionListener(e -> {
             UnHighLightAdminSection();
-            listModel.removeAllElements();
+
         });
 
         calCulateFinalPriceButton.addActionListener(e ->
         {
-            VatValue = (0.15 * getSum());
-
-
+            VatValue = Math.round(0.15 * getSum());
             TotalPriceText.setText(getSum().toString());
-            VatText.setText(VatValue.toString());
+            VatText.setText((Long.toString(VatValue)));
+            int rowCount = DrinkTable.getRowCount();
+            SelectedDrinks.add("Drink Name : " + "|" + " Drink Price ");
+            for (int i = 0; i < rowCount; i++) {
+
+                String dName = DrinkTable.getValueAt(i, 1).toString();
+                Double dTotalPrice = Double.parseDouble(DrinkTable.getValueAt(i, 4).toString());
+                listModel = new DefaultListModel<>();
+
+
+                if ((dTotalPrice != 0) && (!listModel.contains(dName))) {
+//                    System.out.println("Drink Name : " + "|" + " Drink Price ");
+
+
+                    SelectedDrinks.add(dName + "|" + dTotalPrice.toString());
+                }
+            }
+            for (String st : SelectedDrinks
+                    ) {
+                listModel.addElement(st);
+            }
+            //listModel.addElement("Hello");
+
+            InvoiceList.setModel(listModel);
+
+
         });
+
 
         calculateTotalSumButton.addActionListener(e1 ->
         {
-            Double TotalSum = VatValue + getSum();
-            FinalSumText.setText(TotalSum.toString());
+            long TotalSum = Math.round(VatValue + getSum());
+            FinalSumText.setText(Long.toString(TotalSum));
 
         });
 
@@ -130,19 +156,17 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
             ResetData();
 
+
         });
         writeINToReportTableButton.addActionListener(new ActionListener() {
 
 
             @Override
-            public void actionPerformed(ActionEvent e)
-            {
+            public void actionPerformed(ActionEvent e) {
 
 
-                try
-                {
+                try {
                     String Driver = "com.mysql.jdbc.Driver";
-                    //Class.forName(Driver);
                     Connection conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
                     statement = conn.createStatement();
                     if (!ReportTableExists()) {
@@ -150,7 +174,13 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                         statement.execute(CreateReportTable);
                         System.out.println(" Report Table Created");
                     }
-
+                    if(FinalSumText.equals("") && TotalPriceText.equals("") && SelectedDrinks.equals(""))
+                    {
+                        JOptionPane.showMessageDialog(rootPane,"No data to write into the report_Table");
+                        return;
+                    }
+                    else
+                    {
                     int rowCount = DrinkTable.getRowCount();
                     String dName = "";
                     String timeOFSale = "";
@@ -161,8 +191,6 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                             dName = DrinkTable.getValueAt(i, 1).toString();
                             timeOFSale = DateText.getText();
                             System.out.println("I am drink name " + dName + "I am the Price " + Sales + " i am the time " + timeOFSale);
-
-
                             String addDataSQL = "INSERT INTO " + Report_Table_Name + "(" + DrinkName_Column + " , " + Sale_Per_Drink + " , " + Date_Of_Sale_Column + " )" + " VALUES (?,?,?)";
                             preparedStatement = conn.prepareStatement(addDataSQL);
                             preparedStatement.setString(1, dName);
@@ -170,6 +198,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                             preparedStatement.setString(3, timeOFSale);
                             preparedStatement.execute();
                         }
+                    }
                     }
                 } catch (SQLException se) {
                     System.out.println(se);
@@ -194,8 +223,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                     return;
 
                 }
-                if (Price < 0)
-                {
+                if (Price < 0) {
                     throw new NumberFormatException("Price needs to be a positive number");
 
                 }
@@ -219,6 +247,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             if (currentRow == -1) {      // -1 means no row is selected. Display error message.
                 JOptionPane.showMessageDialog(rootPane, "Please choose a drink to delete");
             }
+            JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the row ?", " Warning", JOptionPane.YES_NO_OPTION);
             boolean deleted = coffeeDataModel.deleteRow(currentRow);
             if (deleted) {
                 Main.loadAllCoffeeData();
@@ -230,33 +259,30 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
         extractDataButton.addActionListener(e ->
         {
-            listModel = new DefaultListModel<Object>();
+            //listModel = new DefaultListModel<Object>();
             try {
 
                 String searchText = SearchText.getText();
-                if(searchText ==null || searchText.trim().equals("")
-                        )
-                {
-                    JOptionPane.showMessageDialog(rootPane,"Search box is empty !!! please enter a string to search");
+                if (searchText == null || searchText.trim().equals("")
+                        ) {
+                    JOptionPane.showMessageDialog(rootPane, "Search box is empty !!! please enter a string to search");
                     SearchText.grabFocus();
+                    return;
 
                 }
                 System.out.println("I am search " + searchText);
-                 conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
+                conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
                 statement = conn.createStatement();
                 //String addSql = "SELECT * FROM " + Report_Table_Name + " WHERE " + Date_Of_Sale_Column + " = " + searchText;
                 //String addSql = "select * from Sale_Report where Date_OF_Sale = '2016/05/03'";
-               String addSql = "select * from Sale_Report where Date_OF_Sale" + " = " + "'" + searchText + "'";
+                String addSql = "select * from Sale_Report where Date_OF_Sale" + " = " + "'" + searchText + "'";
                 //String addSql = " select * from Sale_Report where '?' = searchText ";
                 res = statement.executeQuery(addSql);
 
-                if (reportTableModel == null)
-                {
+                if (reportTableModel == null) {
                     reportTableModel = new ReportTableModel(res);
 
-                }
-                else
-                {
+                } else {
                     reportTableModel.updateResultSet(res);
 
                 }
@@ -292,60 +318,121 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
         writeToaFileButton.addActionListener(e ->
         {
-            if(reportTableModel == null)
-            {
-                JOptionPane.showMessageDialog(rootPane," No data TO write !!! Please extract some data for your table");
+            if (reportTableModel == null) {
+                JOptionPane.showMessageDialog(rootPane, " No data TO write !!! Please extract some data for your table");
                 SearchText.grabFocus();
-            }
-            else
-            {
+            } else {
                 WriteIntoAFile.WriteIntoAFile(ReportTable);
-                
+
             }
 
         });
+
+        chartButton.addActionListener(e ->
+        {
+            HashMap<String, Double> ChartValues = new HashMap<String, Double>();
+            LinkedList<String> drinkName = new LinkedList<String>();
+
+            int rowsCount = ReportTable.getRowCount();
+            for (int i = 0; i < rowsCount; i++) {
+                drinkName.add(ReportTable.getValueAt(i, 1).toString());
+
+            }
+            try {
+                for (String st : drinkName
+                        ) {
+
+                    String sql = "SELECT SUM(Total_Price) AS overallPrice FROM Sale_Report WHERE Drink_Name = ?";
+                    preparedStatement = conn.prepareStatement(sql);
+                    preparedStatement.setString(1, st);
+                    ResultSet resultSet_DrinkName = preparedStatement.executeQuery();
+
+                    while (resultSet_DrinkName.next()) {
+                        Double value = resultSet_DrinkName.getDouble("overallPrice");
+                        ChartValues.put(st, value);
+
+
+                    }
+                }
+                System.out.println(" I am the chart value " + ChartValues);
+                JFrame frame = new JFrame();
+                final int FRAME_WIDTH = 500;
+                final int FRAME_HEIGHT = 500;
+
+                frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+                frame.setTitle("BarChart for sales on  " + SearchText.getText());
+                //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.getContentPane().setBackground(Color.getColor("Green"));
+
+
+                BarChartComponent component = new BarChartComponent(ChartValues);
+                frame.add(component);
+
+                frame.setVisible(true);
+            } catch (SQLException se) {
+                System.out.println("Error " + se);
+            }
+
+
+        });
     }
-    private static boolean ReportTableExists() throws SQLException
-    {
+
+    //        DrinkTable.getModel().addTableModelListener(new TableModelListener() {
+//            @Override
+//            public void tableChanged(TableModelEvent e) {
+//
+//
+//                int[] selectedRow = DrinkTable.getSelectedRows();
+//                int[] selectedColumns = DrinkTable.getSelectedColumns();
+//                String selectedData = "";
+//
+//
+//                for (int i = 0; i < DrinkTable.getRowCount(); i++) {
+//                    for (int j = 0; j < selectedColumns.length; j++) {
+//                        selectedData = (String) DrinkTable.getValueAt(selectedRow[i], selectedColumns[j]);
+//
+//
+//                    }
+//                }
+//                System.out.println("Selected: " + selectedData);
+//
+//            }
+//        });
+//    }
+    private static boolean ReportTableExists() throws SQLException {
         String checkTablePresentQuery = " SHOW TABLES LIKE '" + Report_Table_Name + "'";
         ResultSet tablesRS = statement.executeQuery(checkTablePresentQuery);
-        if (tablesRS.next())
-        {    //If ResultSet has a next row, it has at least one row... that must be our table
+        if (tablesRS.next()) {    //If ResultSet has a next row, it has at least one row... that must be our table
             return true;
         }
         return false;
     }
 
     @Override
-    public void windowOpened(WindowEvent e)
-    {
+    public void windowOpened(WindowEvent e) {
 
     }
 
     @Override
-    public void windowClosing(WindowEvent e)
-    {
+    public void windowClosing(WindowEvent e) {
         Main.shutdown();
         System.out.println("Closing");
 
     }
 
     @Override
-    public void windowClosed(WindowEvent e)
-    {
+    public void windowClosed(WindowEvent e) {
 
     }
 
     @Override
-    public void windowIconified(WindowEvent e)
-    {
+    public void windowIconified(WindowEvent e) {
 
 
     }
 
     @Override
-    public void windowDeiconified(WindowEvent e)
-    {
+    public void windowDeiconified(WindowEvent e) {
 
     }
 
@@ -359,8 +446,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
     }
 
-    public void UnHighLightAdminSection()
-    {
+    public void UnHighLightAdminSection() {
 
         AdminLabel.setEnabled(false);
         ADDDRINKTEXT.setEnabled(false);
@@ -383,8 +469,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     public void HighLightAdminSection() {
         String password = String.valueOf(AdminPassword.getPassword());
         System.out.println("I am the password " + password);
-        if (password.equals("JavaProject"))
-        {
+        if (password.equals("JavaProject")) {
 
             AdminLabel.setEnabled(true);
             ADDDRINKTEXT.setEnabled(true);
@@ -399,7 +484,6 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             writeToaFileButton.setEnabled(true);
             quitAdminSectionButton.setEnabled(true);
             coffeeDataModel.adminMode = true;
-
 
 
         } else {
@@ -417,25 +501,35 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         return sum;
     }
 
-    public void ResetData() {
-        FinalSumText.setText("");
-        VatText.setText("");
-        TotalPriceText.setText("");
-        int rowCount = DrinkTable.getRowCount();
-        for (int i = 0; i < rowCount; i++) {
-            DrinkTable.setValueAt(0, i, 3);
-            DrinkTable.setValueAt(0, i, 4);
+    public void ResetData()
+    {
+        for (int j = 0; j < DrinkTable.getRowCount(); j++)
+        {
+            if (listModel==null || (DrinkTable.getValueAt(j, 3).equals(0)))
+            {
+                JOptionPane.showMessageDialog(rootPane, "There is nothing to reset");
+                return;
+            }
+            else
+            {
+                FinalSumText.setText("");
+                VatText.setText("");
+                TotalPriceText.setText("");
+                int rowCount = DrinkTable.getRowCount();
+                for (int i = 0; i < rowCount; i++) {
+                    DrinkTable.setValueAt(0, i, 3);
+                    DrinkTable.setValueAt(0, i, 4);
 
-            // ((CoffeeDataModel)DrinkTable.getModel()).
+                    // ((CoffeeDataModel)DrinkTable.getModel()).
+                }
+
+                listModel.removeAllElements();
+
+            }
         }
 
+
     }
-
-
-
-
-
-
 }
 
 

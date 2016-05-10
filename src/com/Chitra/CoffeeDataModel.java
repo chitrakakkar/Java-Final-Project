@@ -1,6 +1,8 @@
 package com.Chitra;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +15,8 @@ public class CoffeeDataModel extends AbstractTableModel
 {
     ResultSet resultSet;
     int numberOfRows;
+
+
     int numberOfColumns;
     public static Double FinalSum =0.0;
     Double totalPrice =0.0;
@@ -100,7 +104,7 @@ public class CoffeeDataModel extends AbstractTableModel
             {
                 Double price = Double.parseDouble( getValueAt(rowIndex,2).toString());
                 Integer quantity = Integer.parseInt(getValueAt(rowIndex,3).toString());
-                Double TotalPrice = price * quantity;
+                Double TotalPrice = (double)Math.round(price * quantity);
                 totalPrice = new Double(TotalPrice);
                 return totalPrice.toString();
             }
@@ -113,7 +117,7 @@ public class CoffeeDataModel extends AbstractTableModel
                 }
                 catch (NullPointerException np)
                 {
-                    return "";
+                    return " Hello";
                 }
             }
         }
@@ -154,36 +158,65 @@ public class CoffeeDataModel extends AbstractTableModel
     // user edits an editable cell which is Time _Taken in this case
     public void setValueAt(Object newValue, int row, int col)
     {
-        //Make sure newValue is a positive number
-        Double newQuantity;
-        try {
-            newQuantity = Double.parseDouble(newValue.toString());
-            if (newQuantity < 0.0)
-            {
-                throw new NumberFormatException("Time Taken  must be a postive double number");
+        if(col == 3)
+        {
+            //Make sure newValue is a positive number
+            Double newQuantity;
+            try {
+                newQuantity = Double.parseDouble(newValue.toString());
+                if (newQuantity < 0.0) {
+                    throw new NumberFormatException("Quantity  must be a postive double number");
+                }
+            } catch (NumberFormatException ne) {
+                //Error dialog box. First argument is the parent GUI component, which is only used to center the
+                // dialog box over that component. We don't have a reference to any GUI components here
+                // but are allowed to use null - this means the dialog box will show in the center of your screen.
+                JOptionPane.showMessageDialog(null, "Try entering a positive number for quantity");
+                //return prevents the following database update code happening...
+                return;
             }
-        } catch (NumberFormatException ne)
-        {
-            //Error dialog box. First argument is the parent GUI component, which is only used to center the
-            // dialog box over that component. We don't have a reference to any GUI components here
-            // but are allowed to use null - this means the dialog box will show in the center of your screen.
-            JOptionPane.showMessageDialog(null, "Try entering a positive number");
-            //return prevents the following database update code happening...
-            return;
+            try {
+                resultSet.absolute(row + 1);
+                resultSet.updateDouble(Main.Quantity_Column, newQuantity);
+                //System.out.println("Updated the Quantity");
+                resultSet.updateRow();
+                fireTableDataChanged();
+                //TotalPriceText.setText(getSum().toString());
+            } catch (SQLException se) {
+                System.out.println("Error updating the quantity" + se);
+            }
         }
-        try
+
+        if(adminMode && col==2)
         {
-            resultSet.absolute(row + 1);
-            resultSet.updateDouble(Main.Quantity_Column, newQuantity);
-            //System.out.println("Updated the Quantity");
-            resultSet.updateRow();
-            fireTableDataChanged();
-            //TotalPriceText.setText(getSum().toString());
+            Double newPRice;
+            try
+            {
+                newPRice = Double.parseDouble(newValue.toString());
+                if(newPRice<0.0)
+                {
+                    throw new NumberFormatException("Time Taken  must be a postive double number");
+
+                }
+            }
+            catch (NumberFormatException ne)
+            {
+                JOptionPane.showMessageDialog(null, "Try entering a positive number for quantity");
+                return;
+            }
+            try
+            {
+                resultSet.absolute(row + 1);
+                resultSet.updateDouble(Main.Price_Column, newPRice);
+                resultSet.updateRow();
+                fireTableDataChanged();
+
+            }catch (SQLException se)
+            {
+                System.out.println("Error updating the price" + se);
+            }
         }
-        catch (SQLException se)
-        {
-            System.out.println("Error updating the time" + se);
-        }
+
     }
 
     // allows to edit the cell(Time taken in this case)
@@ -234,6 +267,15 @@ public class CoffeeDataModel extends AbstractTableModel
             return "?";
         }
     }
+
+
+
+
+
+
+
+
+
 
     // up vote
     //down vote

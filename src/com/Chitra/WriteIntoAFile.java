@@ -18,12 +18,12 @@ public class WriteIntoAFile
         int rowCount = reportTable.getRowCount();
         try{
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(ReportFile,false));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(ReportFile,true));
             for(int i =0;i<rowCount;i++)
             {
                 for (int j = 0; j < reportTable.getColumnCount(); j++)
                 {
-                    writer.write((reportTable.getValueAt(i, j).toString())+"\n");
+                    writer.write((reportTable.getValueAt(i, j).toString()).trim());
                 }
             }
             writer.close();
