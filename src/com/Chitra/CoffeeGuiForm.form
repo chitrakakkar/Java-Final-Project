@@ -169,7 +169,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
       <component id="315d2" class="javax.swing.JLabel">
         <constraints>
@@ -185,7 +187,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
       <component id="51edb" class="javax.swing.JButton" binding="calculateTotalSumButton" default-binding="true">
         <constraints>

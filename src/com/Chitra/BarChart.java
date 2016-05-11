@@ -66,6 +66,8 @@ public class BarChart
 
             g2.setFont(font);
             g2.setColor(Color.BLUE);
+            //g2.fillRect(xleft, yheight - barHeight+BorderGap,barWidth, barHeight);
+            g2.fill3DRect(xleft, yheight - barHeight+BorderGap,barWidth, barHeight,true);
             g2.drawString(DrinkName, (xleft+barWidth/2),(yheight+ (BorderGap + 10 )));
             drawRotate(g2, (BorderGap/2), (yheight/2 ), 270, "TotalSales in  Hundreds ($) ");
            // g2.drawString("TotalSales in  Hundreds" , (BorderGap/2),(yheight/2 ));
