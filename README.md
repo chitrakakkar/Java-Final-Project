@@ -16,7 +16,7 @@ Here are some steps one can follow to run this app;
   Step 6: Finally, you can quit the App;
   
   
-  This App has a special admin section which gives you some privilegdes like add a drink, update the price of current listed drink.
+  This App has a special admin section which gives you some privilegdes like add a drink, delete a drink  and update the price of current listed drink.
   Also, Get the view from the repport table on a particular date and also the intererting part-> you get to see the chart of all drinks sold on a particlar day;
   This chart can be used by the higher management for the business-analysis as which drink is more profitable and what changes they need to make if any drink is not selling enough
   
