@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 /**
  * Created by chitrakakkar on 5/6/16.
+ * this models the report table -> almost equivalent to the coffeemodel except
+ * we do nothing in the report table; just a view for the user by Admin
  */
 public class ReportTableModel extends AbstractTableModel
 {
@@ -77,6 +79,7 @@ public class ReportTableModel extends AbstractTableModel
         return numberOfColumns;
     }
 
+// GETS THE  value at specific row and column in the table
     @Override
     public Object getValueAt(int rowIndex, int columnIndex)
     {
@@ -93,6 +96,7 @@ public class ReportTableModel extends AbstractTableModel
             return se.toString();
         }
     }
+    // displays the columns's name in the table
     @Override
     public String getColumnName(int col)
     {

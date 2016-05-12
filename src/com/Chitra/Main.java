@@ -1,15 +1,19 @@
 package com.Chitra;
 
 import java.sql.*;
+/* This class mainly deals with the connection to the database.
+ * Creating a table into the main database
+ * Closing the connection after everything is done.*/
 
 public class Main
 {
+    // setting up the connection to the database
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
 
-    private static final String DB_NAME = "coffeeshop";
-    private static final String USER = "root";
+    private static final String DB_NAME = "coffeeshop"; // need to create it on Mysql
+    private static final String USER = "root"; // different for each user
     private static final String PASS = "password";
-
+    // variable names for table
     public final static String Coffee_Table_Name = "Drink_Name_Price";
     public final static String PK_Column = "Drink_ID";
 
@@ -19,13 +23,14 @@ public class Main
 
     public final static String Total_Price = "Total_Price";
 
-
+    // table model object for Drink table
     private static CoffeeDataModel coffeeDataModel;
     static Statement statement = null;
     static Connection conn = null;
     static ResultSet rs = null;
-
+    // prepared statement for sql queries
     static PreparedStatement preparedStatement = null;
+    // the main method checks if all set up id done efficiently
     public static void main(String[] args)
     {
         if (!CreateTable()) {
@@ -36,12 +41,9 @@ public class Main
             System.exit(0);
         }
         CoffeeGuiForm CoffeeGui = new CoffeeGuiForm(coffeeDataModel);
-//        GridLayOutDemo gridGui = new GridLayOutDemo();
-//        gridGui.addComponentsToPane(gridGui.getContentPane());
-//        gridGui.pack();
-//        gridGui.setVisible(true);
-//    }
+
     }
+    // set up method to create a table in the database;
     public static boolean CreateTable()
     {
         try
@@ -139,6 +141,7 @@ public class Main
         }
 
     }
+    // Result set gets everything from the table
     public static boolean loadAllCoffeeData()
     {
         try
@@ -163,6 +166,7 @@ public class Main
             return false;
         }
     }
+    // method to check if the coffee table already exists, if so, don't create another one
     private static boolean CoffeeTableExists() throws SQLException
     {
         String checkTablePresentQuery = " SHOW TABLES LIKE '" + Coffee_Table_Name + "'";
@@ -173,6 +177,7 @@ public class Main
         }
         return false;
     }
+    // shuts down the connection, result set and statement
     public static void shutdown()
     {
         try

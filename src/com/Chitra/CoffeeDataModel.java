@@ -1,14 +1,14 @@
 package com.Chitra;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
  * Created by chitrakakkar on 4/29/16.
+ * this class designs the data into table from result set;
+ * Gets you the number of rows, columns, and data to be filled in.
  */
 public class CoffeeDataModel extends AbstractTableModel
 
@@ -127,19 +127,7 @@ public class CoffeeDataModel extends AbstractTableModel
             return se.toString();
 
         }
-//      try {
-//            //move cursor by one row
-//          resultSet.absolute(rowIndex + 1);
-//           Object o = resultSet.getObject(columnIndex + 1);
-//           return o.toString();
-//       } catch (SQLException se) {
-//            System.out.println(se);
-//           //se.printStackTrace();
-//           return se.toString();
-//      }
-   }
-    // deletes the row selected in GUI using predefined method called deleteRow
-    // On the resultSet
+     }
     public  boolean deleteRow(int row)
     {
         try
@@ -158,6 +146,7 @@ public class CoffeeDataModel extends AbstractTableModel
     // user edits an editable cell which is Time _Taken in this case
     public void setValueAt(Object newValue, int row, int col)
     {
+        // quantity column always editable
         if(col == 3)
         {
             //Make sure newValue is a positive number
@@ -186,7 +175,7 @@ public class CoffeeDataModel extends AbstractTableModel
                 System.out.println("Error updating the quantity" + se);
             }
         }
-
+        // gives authority to change the price if in admin section
         if(adminMode && col==2)
         {
             Double newPRice;
@@ -269,28 +258,4 @@ public class CoffeeDataModel extends AbstractTableModel
     }
 
 
-
-
-
-
-
-
-
-
-    // up vote
-    //down vote
-    //table.getSelectedRow() will get selected row.
-
-        //table.getSelectedColumns() will get selected columns.
-
-    //getValueAt(rowIndex, columnIndex) will give the value present at the selected row for each column.
-
-    //if (jTable1.getCellEditor() == null) {
-    //System.out.println("Not Edited");
-
-} //else {
-
-        //System.out.println(jTable1.getValueAt(jTable1.getSelectedRow(),jTable1.getSelectedColumn()));
-       // }
-
-//}
+}

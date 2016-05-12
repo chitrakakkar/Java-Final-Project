@@ -14,8 +14,11 @@ import java.util.Date;
 
 /**
  * Created by chitrakakkar on 4/23/16.
+ * This class handles the GUI-> all the buttons and actions associated with each button
+ * It does have one connection to the database to create a table again in the database.
  */
-public class CoffeeGuiForm extends JFrame implements WindowListener {
+public class CoffeeGuiForm extends JFrame implements WindowListener
+{
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
 
     private static final String DB_NAME = "coffeeshop";
@@ -58,7 +61,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     private JTextField FinalSumText;
     private JButton calculateTotalSumButton;
     private JTable ReportTable;
-    private JScrollPane Summar;
+    private JScrollPane Summary;
     private JList InvoiceList;
     private JButton chartButton;
     private JList<Object> SaleReportList;
@@ -77,9 +80,11 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     static ResultSet res = null;
     private long VatValue = 0;
 
-
-    CoffeeGuiForm(final CoffeeDataModel coffeeDataModel) {
-        this.coffeeDataModel = coffeeDataModel;
+    //constructor to get the data from coffee data model
+    // so its goes like SQl->ResultSet-> CoffeeModel->GUI;
+    CoffeeGuiForm(final CoffeeDataModel coffeeDataModel)
+    {
+        this.coffeeDataModel = coffeeDataModel; // gets info for the Jtable-> DrinkTable
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         setContentPane(rootPanel);
@@ -90,7 +95,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         DrinkTable.setGridColor(Color.black);
         DrinkTable.setModel(coffeeDataModel);
-        UnHighLightAdminSection();
+        UnHighLightAdminSection(); // admin section Un-highlighted
         DateText.setText(dateFormat.format(date));
         DateText.setEditable(false);
         getContentPane().setBackground(Color.PINK);
@@ -102,43 +107,27 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
         });
 
-        quitAdminSectionButton.addActionListener(e -> {
+        quitAdminSectionButton.addActionListener(e ->
+        {
             UnHighLightAdminSection();
-//            DefaultTableModel model = (DefaultTableModel)ReportTable.getModel();
-//            while (model.getRowCount()>0)
-//            {
-//                for(int i=0;i<model.getRowCount();i++)
-//                {
-//                    model.removeRow(i);
-//                }
-//            }
-//            for(int i =0;i<ReportTable.getRowCount();i++)
-//            {for(int j=0;j<ReportTable.getColumnCount();j++)
-//            {
-//            ReportTable.setValueAt(" ",i,j);
-//            }
-//            }
-
+            ReportTable.setVisible(coffeeDataModel.adminMode);
         });
+        //calculates the final price for each drink
 
         calCulateFinalPriceButton.addActionListener(e ->
         {
-
+            SelectedDrinks.clear(); // clears the ordered drinks in the list
             listModel = new DefaultListModel<>();
 
             VatValue = Math.round(0.15 * getSum());
             TotalPriceText.setText(getSum().toString());
             VatText.setText((Long.toString(VatValue)));
             int rowCount = DrinkTable.getRowCount();
-
             //SelectedDrinks.add("Drink Name : " + "|" + " Drink Price ");
             for (int i = 0; i < rowCount; i++) {
 
                 String dName = DrinkTable.getValueAt(i, 1).toString();
                 Double dTotalPrice = Double.parseDouble(DrinkTable.getValueAt(i, 4).toString());
-                //listModel = new DefaultListModel<>();
-
-                //if ((!listModel.contains(dName))) {
                if ((dTotalPrice != 0) && (!listModel.contains(dName))) {
 //                    System.out.println("Drink Name : " + "|" + " Drink Price ")
                     SelectedDrinks.add(dName + "|" + dTotalPrice.toString());
@@ -148,30 +137,26 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                     ) {
                 listModel.addElement(st);
             }
-            //listModel.addElement("Hello");
-
             InvoiceList.setModel(listModel);
-
-
         });
 
-
+        // calculates the total sum
         calculateTotalSumButton.addActionListener(e1 ->
         {
             long TotalSum = Math.round(VatValue + getSum());
             FinalSumText.setText(Long.toString(TotalSum));
 
         });
-
+        // resets everything on this button click
         resetButton.addActionListener(e -> {
 
             ResetData();
 
 
         });
-        writeINToReportTableButton.addActionListener(new ActionListener() {
-
-
+        // creates a new table called Sale_report table
+        writeINToReportTableButton.addActionListener(new ActionListener()
+        {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -185,10 +170,12 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                         statement.execute(CreateReportTable);
                         System.out.println(" Report Table Created");
                     }
+                    //Validation-check
                     if (FinalSumText.equals("") || TotalPriceText.equals("") || listModel == null) {
                         JOptionPane.showMessageDialog(rootPane, "No data to write into the report_Table");
                         return;
-                    } else {
+                    } else
+                    {
                         int rowCount = DrinkTable.getRowCount();
                         String dName = "";
                         String timeOFSale = "";
@@ -199,6 +186,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                                 dName = DrinkTable.getValueAt(i, 1).toString();
                                 timeOFSale = DateText.getText();
                                 System.out.println("I am drink name " + dName + "I am the Price " + Sales + " i am the time " + timeOFSale);
+                                // SQL to insert the value into the table
                                 String addDataSQL = "INSERT INTO " + Report_Table_Name + "(" + DrinkName_Column + " , " + Sale_Per_Drink + " , " + Date_Of_Sale_Column + " )" + " VALUES (?,?,?)";
                                 preparedStatement = conn.prepareStatement(addDataSQL);
                                 preparedStatement.setString(1, dName);
@@ -213,7 +201,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                 }
             }
         });
-
+        // add a new row to the drink table
         addButton.addActionListener(e ->
         {
             String drinkName = ADDDRINKTEXT.getText();
@@ -221,15 +209,16 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             if (drinkName == null || drinkName.trim().equals("")) {
                 JOptionPane.showMessageDialog(rootPane, "Please enter a name for the drink");
                 return;
-
             }
-            try {
+            //Validation-check
+            try
+            {
                 Price = Double.parseDouble(ADDPRICETEXT.getText());
 
-                if (Price.toString() == null || Price.toString().trim().equals("")) {
+                if (Price.toString() == null || Price.toString().trim().equals(""))
+                {
                     JOptionPane.showMessageDialog(rootPane, "Please enter a price for the drink");
                     return;
-
                 }
                 if (Price < 0)
                 {
@@ -242,38 +231,57 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                         "please enter a valid price");
                 return;
             }
+            // inserts the row
             boolean insertRow = coffeeDataModel.insertRow(drinkName, Price, 0, 0.0);
             JOptionPane.showMessageDialog(rootPane, drinkName + " added successfully @ price " + Price);
             ADDDRINKTEXT.setText("");
             ADDPRICETEXT.setText("");
-            if (!insertRow) {
+            if (!insertRow)
+            {
                 JOptionPane.showMessageDialog(rootPane, "Error adding new drink");
-
             }
         });
-
+        // deletes a row from table
         deleteButton.addActionListener(e ->
         {
+            boolean deleted = false;
+
             int currentRow = DrinkTable.getSelectedRow();
-            if (currentRow == -1) {      // -1 means no row is selected. Display error message.
+            if (currentRow == -1)
+            {      // -1 means no row is selected. Display error message.
                 JOptionPane.showMessageDialog(rootPane, "Please choose a drink to delete");
+                return;
             }
-            JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the row ?", " Warning", JOptionPane.YES_NO_OPTION);
-            boolean deleted = coffeeDataModel.deleteRow(currentRow);
-            if (deleted) {
+            int reply = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete the row ?", " Warning", JOptionPane.YES_NO_OPTION);
+            if(reply == JOptionPane.YES_OPTION)
+            {
+                deleted = coffeeDataModel.deleteRow(currentRow);
+                JOptionPane.showMessageDialog(rootPane, " row " + currentRow + "th has been deleted");
+            }
+            else
+            {
+                return;
+            }
+
+            if (deleted)
+            {
                 Main.loadAllCoffeeData();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Error deleting row");
             }
 
         });
-
+        // extracts the view from sale_ report table with date as hard-coded;
+        // can change it to any string, little tweaking needed in the sql command using prep statement
         extractDataButton.addActionListener(e ->
         {
+            coffeeDataModel.adminMode = true;
+            ReportTable.setVisible(coffeeDataModel.adminMode);
             //listModel = new DefaultListModel<Object>();
             try {
 
-                String searchText = SearchText.getText();
+                String searchText = SearchText.getText(); // gives you the search date in this case
+                //validation-check
                 if (searchText == null || searchText.trim().equals("")
                         ) {
                     JOptionPane.showMessageDialog(rootPane, "Search box is empty !!! please enter a string to search");
@@ -284,12 +292,10 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                 System.out.println("I am search " + searchText);
                 conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
                 statement = conn.createStatement();
-                //String addSql = "SELECT * FROM " + Report_Table_Name + " WHERE " + Date_Of_Sale_Column + " = " + searchText;
-                //String addSql = "select * from Sale_Report where Date_OF_Sale = '2016/05/03'";
+                // command to get you the data from DB;
                 String addSql = "select * from Sale_Report where Date_OF_Sale" + " = " + "'" + searchText + "'";
                 //String addSql = " select * from Sale_Report where '?' = searchText ";
                 res = statement.executeQuery(addSql);
-
                 if (reportTableModel == null) {
                     reportTableModel = new ReportTableModel(res);
 
@@ -300,33 +306,19 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                 ReportTable.setModel(reportTableModel);
                 ReportTable.setGridColor(Color.black);
 
-                //CoffeeDataModel newTable = new CoffeeDataModel(res);
-
-//                while (res.next())
-//                {
-//                    SalesReportData.add(res.getString(1)+ "." + res.getString(2)+" | "+ res.getString(3)+ " | "+ res.getString(4));
-////                    SalesReportData.add(res.getString(2));
-////                    SalesReportData.add(res.getString(3));
-////                    SalesReportData.add(res.getString(4));
-//                }
-//                for (Object st : SalesReportData)
-//                {
-//                    listModel.addElement(st);
-//                }
-//                SaleReportList.setModel(listModel);
             } catch (SQLException se) {
                 System.out.println("I am the error " + se);
                 System.out.println("Error extracting data !!!");
                 return;
             }
         });
-
+        // quits the windows
         quitButton.addActionListener(e ->
         {
             System.exit(0);
 
         });
-
+        // writes the extracted view to a file from report table
         writeToaFileButton.addActionListener(e ->
         {
             if (reportTableModel == null) {
@@ -338,34 +330,43 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             }
 
         });
-
+        // this displays a chart for every day sale on a different jframe.
         chartButton.addActionListener(e ->
         {
-
+            // a hashMap to get the X and Y co-ordinates
             HashMap<String, Double> ChartValues = new HashMap<String, Double>();
             LinkedList<String> drinkName = new LinkedList<String>();
-
-            int rowsCount = DrinkTable.getRowCount();
-            for (int i = 0; i < rowsCount; i++) {
-                drinkName.add(DrinkTable.getValueAt(i, 1).toString());
+            int rowsCount = ReportTable.getRowCount();
+            for (int i = 0; i < rowsCount; i++)
+            {
+                drinkName.add(ReportTable.getValueAt(i, 1).toString()); // adds all the drinks
 
             }
-            try {
+            // gets the total price for all the drinks in the report table
+            // if you change the table name to drink table,
+            // it will show the graph for all the drinks till date
+            // for all drinks-> change the line-341 and line 344 to drinkTable;
+            try
+            {
                 for (String st : drinkName
                         ) {
 
+                   // a query to get the total sum for each drink;
                     String sql = "SELECT SUM(Total_Price) AS overallPrice FROM Sale_Report WHERE Drink_Name = ?";
+                    conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
                     preparedStatement = conn.prepareStatement(sql);
                     preparedStatement.setString(1, st);
                     ResultSet resultSet_DrinkName = preparedStatement.executeQuery();
 
-                    while (resultSet_DrinkName.next()) {
+                    // gets you the value for each drink
+                    while (resultSet_DrinkName.next())
+                    {
                         Double value = resultSet_DrinkName.getDouble("overallPrice");
                         ChartValues.put(st, value);
 
-
                     }
                 }
+                // draws the second frame
                 System.out.println(" I am the chart value " + ChartValues);
                 JFrame frame = new JFrame();
                 final int FRAME_WIDTH = 800;
@@ -374,20 +375,20 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                 frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
                 frame.setTitle("BarChart for sales till  " + SearchText.getText());
                 //frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.getContentPane().setBackground(Color.getColor("Green"));
-
-
+                frame.getContentPane().setBackground(Color.GRAY);
                 BarChartComponent component = new BarChartComponent(ChartValues);
                 frame.add(component);
-
                 frame.setVisible(true);
-            } catch (SQLException se) {
+            } catch (SQLException se)
+            {
                 System.out.println("Error " + se);
             }
 
 
         });
     }
+
+    // to record changes in the table dynamically-> not using it in this project
 
     //        DrinkTable.getModel().addTableModelListener(new TableModelListener() {
 //            @Override
@@ -411,7 +412,10 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 //            }
 //        });
 //    }
-    private static boolean ReportTableExists() throws SQLException {
+
+    //checks if the report table exists, if do-> does not crate another table
+    private static boolean ReportTableExists() throws SQLException
+    {
         String checkTablePresentQuery = " SHOW TABLES LIKE '" + Report_Table_Name + "'";
         ResultSet tablesRS = statement.executeQuery(checkTablePresentQuery);
         if (tablesRS.next()) {    //If ResultSet has a next row, it has at least one row... that must be our table
@@ -424,7 +428,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     public void windowOpened(WindowEvent e) {
 
     }
-
+    // closes all the connection
     @Override
     public void windowClosing(WindowEvent e) {
         Main.shutdown();
@@ -457,7 +461,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
     public void windowDeactivated(WindowEvent e) {
 
     }
-
+        // method to un-highlight the admin section when the GUI loads up
     public void UnHighLightAdminSection() {
 
         AdminLabel.setEnabled(false);
@@ -478,8 +482,10 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
 
 
     }
+    // a method to highlight the admin section when the user enters and matches the password
 
-    public void HighLightAdminSection() {
+    public void HighLightAdminSection()
+    {
         String password = String.valueOf(AdminPassword.getPassword());
         System.out.println("I am the password " + password);
         if (password.equals("JavaProject")) {
@@ -500,12 +506,13 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
             chartButton.setEnabled(true);
 
 
-        } else {
+        } else
+        {
             JOptionPane.showMessageDialog(rootPane, "Wrong Password, try again");
             AdminPassword.grabFocus();
         }
     }
-
+    // a method to get the final price for all the drinks; before the VAT calculation
     public Double getSum() {
         int rowsCount = DrinkTable.getRowCount();
         Double sum = 0.0;
@@ -515,6 +522,7 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
         return sum;
     }
 
+    // resets the data to become ready for the bext order
     public void ResetData()
     {
         for (int j = 0; j < DrinkTable.getRowCount(); j++)
@@ -525,30 +533,20 @@ public class CoffeeGuiForm extends JFrame implements WindowListener {
                 VatText.setText("");
                 TotalPriceText.setText("");
                 int rowCount = DrinkTable.getRowCount();
-                for (int i = 0; i < rowCount; i++) {
-                    DrinkTable.setValueAt(0, i, 3);
-                    DrinkTable.setValueAt(0, i, 4);
-
-
-                    // ((CoffeeDataModel)DrinkTable.getModel()).
+                for (int i = 0; i < rowCount; i++)
+                {
+                    DrinkTable.setValueAt(0, i, 3); // sets the quantity column to 0
+                    DrinkTable.setValueAt(0, i, 4); // price to 0;
                 }
-
             }
             else
             {
                 JOptionPane.showMessageDialog(rootPane,"Nothing to reset");
             }
         }
-        if (listModel != null)
-        {
+        if (listModel != null) {
             listModel.removeAllElements();
 
-//            if (!InvoiceList.getSize().equals(0)) {
-//                //InvoiceList = new JList();
-//                InvoiceList.setModel(listModel);
-////            listModel.clear();
-////            listModel.addElement(" Drink Name | Drink Price ");
-//            //InvoiceList.setModel(listModel);
         }
 
         return;
