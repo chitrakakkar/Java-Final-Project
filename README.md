@@ -32,5 +32,7 @@ Here are some steps one can follow to run this app;
   
 Finally, the data can be extract not only from the report table but also from the drink table; this would give you an idea about the total sale for each drink till date.
 
+Also, the search string is hard-coded to a date but can be changed to any string with prepared statement.
+
 all validation done; no bugs found except for one, sometimes when you hit on chart button when there is no view, there is an error message like->
 Class not found; this does not appear all the time but sometimes;
