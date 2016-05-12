@@ -5,7 +5,7 @@ Here are some steps one can follow to run this app;
 
   Step 1: Change the qunatity and move to next cell in order to see the change in the qunatity and the corresponding total price.
   
-  Step 2: Once you are done choosing the drink, hit Calculate the final Price of all the drinks; It gives you an invloice of your order which can formatted as per the need.I kept it simple. Can be made beautiful and more infromative.
+  Step 2: Once you are done choosing the drink, hit Calculate the final Price of all the drinks; It gives you an invoice of your order which can be formatted as per the need.I kept it simple. Can be made beautiful and more infromative.
   
   Step 3: Hit Total sum to get the payable cash along with the Vat included;
   
